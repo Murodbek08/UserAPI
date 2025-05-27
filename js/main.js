@@ -1,14 +1,14 @@
-let usersHtml = document.querySelector(".users");
-let postsHtml = document.querySelector(".posts");
-let albumsHtml = document.querySelector(".albums");
-let todosHtml = document.querySelector(".todos");
-let photosHtml = document.querySelector(".photos");
-let commentsHtml = document.querySelector(".comments");
+const usersHtml = document.querySelector(".users");
+const postsHtml = document.querySelector(".posts");
+const albumsHtml = document.querySelector(".albums");
+const todosHtml = document.querySelector(".todos");
+const photosHtml = document.querySelector(".photos");
+const commentsHtml = document.querySelector(".comments");
 
-let url = new URLSearchParams(location.search);
-let newUrl = url.get("ID");
+const url = new URLSearchParams(location.search);
+const newUrl = url.get("ID");
 
-let loading = `
+const loading = `
 <div class="loading">
   <div id="wifi-loader">
     <svg class="circle-outer" viewBox="0 0 86 86">
@@ -28,13 +28,12 @@ let loading = `
   </div>
 </div>
 `;
-
 function userData(url) {
-  let pr = new Promise((resolve) => {
-    let xhr = new XMLHttpRequest();
+  const pr = new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        let responseJson = JSON.parse(xhr.response);
+        const responseJson = JSON.parse(xhr.response);
         resolve(responseJson);
       }
     };
@@ -43,33 +42,32 @@ function userData(url) {
   });
   return pr;
 }
-
+userData("https://jsonplaceholder.typicode.com/posts").then((posts) => {
+  const newPosts = posts.filter((el) => el.userId == newUrl);
+  newPosts.map((el) => (postsHtml.innerHTML += postsHtmlFunc(el)));
+});
+userData("https://jsonplaceholder.typicode.com/albums").then((albums) => {
+  const newAlbums = albums.filter((el) => el.userId == newUrl);
+  newAlbums.map((el) => (albumsHtml.innerHTML += albumsHtmlFunc(el)));
+});
+userData("https://jsonplaceholder.typicode.com/todos").then((todos) => {
+  const newTodos = todos.filter((el) => el.userId == newUrl);
+  newTodos.map((el) => (todosHtml.innerHTML += todosHtmlFunc(el)));
+});
+userData("https://jsonplaceholder.typicode.com/photos").then((photos) => {
+  const newPhotos = photos.filter((el) => el.albumId == newUrl);
+  newPhotos.map((el) => (photosHtml.innerHTML += photosHtmlFunc(el)));
+});
+userData("https://jsonplaceholder.typicode.com/comments").then((comments) => {
+  const newComments = comments.filter((el) => el.postId == newUrl);
+  newComments.map((el) => (commentsHtml.innerHTML += commentsHtmlFunc(el)));
+});
+usersHtml.innerHTML = loading;
 userData("https://jsonplaceholder.typicode.com/users").then((users) => {
-  usersHtml.innerHTML = loading;
   setTimeout(() => {
     usersHtml.innerHTML = "";
     users.map((el) => (usersHtml.innerHTML += usersHtmlFunc(el)));
   }, 1000);
-});
-userData("https://jsonplaceholder.typicode.com/posts").then((posts) => {
-  let newPosts = posts.filter((el) => el.userId == newUrl);
-  newPosts.map((el) => (postsHtml.innerHTML += postsHtmlFunc(el)));
-});
-userData("https://jsonplaceholder.typicode.com/albums").then((albums) => {
-  let newAlbums = albums.filter((el) => el.userId == newUrl);
-  newAlbums.map((el) => (albumsHtml.innerHTML += albumsHtmlFunc(el)));
-});
-userData("https://jsonplaceholder.typicode.com/todos").then((todos) => {
-  let newTodos = todos.filter((el) => el.userId == newUrl);
-  newTodos.map((el) => (todosHtml.innerHTML += todosHtmlFunc(el)));
-});
-userData("https://jsonplaceholder.typicode.com/photos").then((photos) => {
-  let newPhotos = photos.filter((el) => el.albumId == newUrl);
-  newPhotos.map((el) => (photosHtml.innerHTML += photosHtmlFunc(el)));
-});
-userData("https://jsonplaceholder.typicode.com/comments").then((comments) => {
-  let newComments = comments.filter((el) => el.postId == newUrl);
-  newComments.map((el) => (commentsHtml.innerHTML += commentsHtmlFunc(el)));
 });
 
 function usersHtmlFunc({ name, username, email, address, id }) {
