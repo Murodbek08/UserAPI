@@ -5,8 +5,12 @@ const todosHtml = document.querySelector(".todos");
 const photosHtml = document.querySelector(".photos");
 const commentsHtml = document.querySelector(".comments");
 
-const url = new URLSearchParams(location.search);
-const newUrl = url.get("ID");
+const hash = window.location.hash;
+const newUrl = hash.startsWith("#?") ? hash.slice(2) : "";
+const barauxerUrl = new URLSearchParams(newUrl);
+
+const userId = barauxerUrl.get("ID");
+const userPage = barauxerUrl.get("page");
 
 const loading = `
 <div class="loading">
@@ -42,33 +46,40 @@ function userData(url) {
   });
   return pr;
 }
-userData("https://jsonplaceholder.typicode.com/posts").then((posts) => {
-  const newPosts = posts.filter((el) => el.userId == newUrl);
-  newPosts.map((el) => (postsHtml.innerHTML += postsHtmlFunc(el)));
-});
+
 userData("https://jsonplaceholder.typicode.com/albums").then((albums) => {
-  const newAlbums = albums.filter((el) => el.userId == newUrl);
+  const newAlbums = albums.filter((el) => el.userId == userId);
   newAlbums.map((el) => (albumsHtml.innerHTML += albumsHtmlFunc(el)));
 });
 userData("https://jsonplaceholder.typicode.com/todos").then((todos) => {
-  const newTodos = todos.filter((el) => el.userId == newUrl);
+  const newTodos = todos.filter((el) => el.userId == userId);
   newTodos.map((el) => (todosHtml.innerHTML += todosHtmlFunc(el)));
 });
 userData("https://jsonplaceholder.typicode.com/photos").then((photos) => {
-  const newPhotos = photos.filter((el) => el.albumId == newUrl);
+  const newPhotos = photos.filter((el) => el.albumId == userId);
   newPhotos.map((el) => (photosHtml.innerHTML += photosHtmlFunc(el)));
 });
 userData("https://jsonplaceholder.typicode.com/comments").then((comments) => {
-  const newComments = comments.filter((el) => el.postId == newUrl);
+  const newComments = comments.filter((el) => el.postId == userId);
   newComments.map((el) => (commentsHtml.innerHTML += commentsHtmlFunc(el)));
 });
-usersHtml.innerHTML = loading;
-userData("https://jsonplaceholder.typicode.com/users").then((users) => {
-  setTimeout(() => {
-    usersHtml.innerHTML = "";
-    users.map((el) => (usersHtml.innerHTML += usersHtmlFunc(el)));
-  }, 1000);
-});
+
+setInterval(() => {
+  if ("Post" == userPage) {
+    userData("https://jsonplaceholder.typicode.com/posts").then((posts) => {
+      const newPosts = posts.filter((el) => el.userId == userId);
+      newPosts.map((el) => (usersHtml.innerHTML += postsHtmlFunc(el)));
+    });
+  } else {
+    usersHtml.innerHTML = loading;
+    userData("https://jsonplaceholder.typicode.com/users").then((users) => {
+      setTimeout(() => {
+        usersHtml.innerHTML = "";
+        users.map((el) => (usersHtml.innerHTML += usersHtmlFunc(el)));
+      }, 1000);
+    });
+  }
+}, 2000);
 
 function usersHtmlFunc({ name, username, email, address, id }) {
   return `
@@ -78,14 +89,23 @@ function usersHtmlFunc({ name, username, email, address, id }) {
       <h3>Email: <span>${email}</span></h3>
       <h3>Address: <span>${address.street}</span></h3>
      <div> 
-       <a href="../pages/posts.html?ID=${id}">Post</a>
-       <a href="../pages/comments.html?ID=${id}">Comment</a>
-       <a href="../pages/albums.html?ID=${id}">Album</a>
-       <a href="../pages/photos.html?ID=${id}">Photo</a>
-       <a href="../pages/todos.html?ID=${id}">Todo</a>
+       <a href="#?ID=${id}&page=Post">Post</a>
+       <a href="#?ID=${id}&page=Comment">Comment</a>
+       <a href="#?ID=${id}&page=Album">Album</a>
+       <a href="#?ID=${id}&page=Photo">Photo</a>
+       <a href="#?ID=${id}&page=Todo">Todo</a>
      </div>
   </div>
   `;
+}
+{
+  /* <div>
+  <a href="../pages/posts.html?ID=${id}">Post</a>
+  <a href="../pages/comments.html?ID=${id}">Comment</a>
+  <a href="../pages/albums.html?ID=${id}">Album</a>
+  <a href="../pages/photos.html?ID=${id}">Photo</a>
+  <a href="../pages/todos.html?ID=${id}">Todo</a>
+</div>; */
 }
 function postsHtmlFunc({ title, body }) {
   return `
