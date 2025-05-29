@@ -14,14 +14,14 @@ a {
   text-decoration: none;
 }
 .container {
-  max-width: 1700px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 .users {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((4, 1fr));
+  grid-template-columns: repeat((3, 1fr));
   gap: 10px;
   .card {
     background: rgba(255, 255, 255, 0.1);
@@ -64,7 +64,7 @@ a {
 .posts {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((5, 1fr));
+  grid-template-columns: repeat((2, 1fr));
   gap: 10px;
   .card {
     background: rgba(255, 255, 255, 0.1);
@@ -86,7 +86,7 @@ a {
 .comments {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((5, 1fr));
+  grid-template-columns: repeat((2, 1fr));
   gap: 10px;
   .card {
     background: rgba(255, 255, 255, 0.1);
@@ -108,7 +108,7 @@ a {
 .albums {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((5, 1fr));
+  grid-template-columns: repeat((3, 1fr));
   gap: 10px;
   .card {
     background: rgba(255, 255, 255, 0.1);
@@ -126,7 +126,7 @@ a {
 .photos {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((5, 1fr));
+  grid-template-columns: repeat((3, 1fr));
   gap: 10px;
   .card {
     background: rgba(255, 255, 255, 0.1);
@@ -148,7 +148,7 @@ a {
 .todos {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat((2, 1fr));
+  grid-template-columns: repeat((1, 1fr));
   gap: 10px;
   .card {
     display: flex;

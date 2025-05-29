@@ -59,12 +59,10 @@ userData("https://jsonplaceholder.typicode.com/comments").then((comments) => {
   const newComments = comments.filter((el) => el.postId == userIdUrl);
   newComments.map((el) => (commentsHtml.innerHTML += commentsHtmlFunc(el)));
 });
-
 userData("https://jsonplaceholder.typicode.com/posts").then((posts) => {
   const newPosts = posts.filter((el) => el.userId == userIdUrl);
   newPosts.map((el) => (postsHtml.innerHTML += postsHtmlFunc(el)));
 });
-
 usersHtml.innerHTML = loading;
 userData("https://jsonplaceholder.typicode.com/users").then((users) => {
   setTimeout(() => {
@@ -89,15 +87,6 @@ function usersHtmlFunc({ name, username, email, address, id }) {
      </div>
   </div>
   `;
-}
-{
-  /* <div>
-  <a href="#?ID=${id}&page=Post">Post</a>
-  <a href="#?ID=${id}&page=Comment">Comment</a>
-  <a href="#?ID=${id}&page=Album">Album</a>
-  <a href="#?ID=${id}&page=Photo">Photo</a>
-  <a href="#?ID=${id}&page=Todo">Todo</a>
-</div>; */
 }
 
 function postsHtmlFunc({ title, body }) {
@@ -141,3 +130,4 @@ function todosHtmlFunc({ title, completed }) {
   </div>
   `;
 }
+
